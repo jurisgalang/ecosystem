@@ -33,15 +33,15 @@ class Cell {
     
     // nucleus
     fill(#770000, 150);
-    ellipse(0, 0, 5, 5);
+    ellipse(0, -7.5, 5, 5);
 
     // body
     fill(#a0a0a0, 75);
-    ellipse(0, 0, 10, 10);
+    ellipse(0, -5, 15, 18);
     
     // tail  
     stroke(#a1a1a1, 75);
-    line(0, 0, 0, 25); 
+    line(0, -5, 0, 25); 
 
     popMatrix();
   }
@@ -49,7 +49,7 @@ class Cell {
 
 
 class World {
-  int POPULATION = 100;
+  int POPULATION = 1;
   
   List<Cell> cells;
   
