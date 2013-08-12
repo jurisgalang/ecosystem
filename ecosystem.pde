@@ -5,12 +5,20 @@ class Cell {
   PVector location;
   PVector velocity;
   
+  float maximumVelocity     = 5;
+  float maximumAcceleration = 0.5; // ...actually the ± high-end ranges
+  
   Cell() {
     location = PVector.random2D();
-    velocity = PVector.random2D();
+    velocity = new PVector(0, 0);
   }
 
   void move() {
+    PVector acceleration = PVector.random2D(); 
+    acceleration.mult(random(maximumAcceleration));
+    
+    velocity.add(acceleration);
+    velocity.limit(maximumVelocity);
     location.add(velocity); 
   }
   
@@ -41,7 +49,8 @@ class Cell {
 
 
 class World {
-  int POPULATION = 1;
+  int POPULATION = 100;
+  
   List<Cell> cells;
   
   World() {
