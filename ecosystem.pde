@@ -3,25 +3,37 @@ import java.util.List;
 
 class Cell {  
   PVector location;
+  PVector velocity;
   
   Cell() {
     location = PVector.random2D();
+    velocity = PVector.random2D();
+  }
+
+  void move() {
+    location.add(velocity); 
   }
   
   void draw() {
     pushMatrix();
-    translate(location.x, location.y);    
+    translate(location.x, location.y);
+
+    float theta = velocity.heading() + PI / 2;
+    rotate(theta);
     
     noStroke();
     
-    fill(#770101, 75);
-    ellipse(location.x, location.y, 5, 5);        // nucleus
-    
+    // nucleus
+    fill(#770000, 150);
+    ellipse(0, 0, 5, 5);
+
+    // body
     fill(#a0a0a0, 75);
-    ellipse(location.x, location.y, 10, 10);      // body
+    ellipse(0, 0, 10, 10);
     
+    // tail  
     stroke(#a1a1a1, 75);
-    line(location.x, location.y, location.x, 25); // tail 
+    line(0, 0, 0, 25); 
 
     popMatrix();
   }
@@ -46,7 +58,9 @@ class World {
   void draw() {
     Iterator<Cell> i = cells.iterator();
     while (i.hasNext()) {
-      i.next().draw();
+      Cell cell = i.next();
+      cell.move();
+      cell.draw();
     }
   }
 }
@@ -56,8 +70,8 @@ World world;
 
 void setup() {
   size(800, 400);
-  world = new World();
   smooth();
+  world = new World();
 }
 
 void draw() {
