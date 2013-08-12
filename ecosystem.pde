@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.List;
 
 class World {
-  int POPULATION = 1000;
+  int POPULATION = 10;
   
   List<Cell> cells = new ArrayList<Cell>();
   
@@ -30,7 +30,7 @@ class Cell {
   PVector location;
   PVector velocity;
   
-  float maximumVelocity     = 10;
+  float maximumVelocity     = 3;
   float maximumAcceleration = 0.5; // ...actually the ± high-end ranges
   
   Cell() {
@@ -63,7 +63,7 @@ class Cell {
     if (nucleusSize < 5)  nucleusSize += age;
     if (bodyWidth   < 20) bodyWidth   += age;
     if (bodyHeight  < 12) bodyHeight  += age;
-    if (tailLength  < 40) tailLength  *= (1 + age);
+    if (tailLength  < 40) tailLength  *= (1 + age / 2);
   }
   
   void draw() {
@@ -97,7 +97,7 @@ class Cell {
 World world;
 
 void setup() {
-  size(800, 400, P3D);
+  size(1600, 800, P3D);
   smooth();
   world = new World();
 }
