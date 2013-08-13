@@ -1,0 +1,3 @@
+#!/bin/sh
+processing-java --run --sketch=`pwd` --output=`pwd`/tmp
+rm -r `pwd`/tmp > /dev/null
