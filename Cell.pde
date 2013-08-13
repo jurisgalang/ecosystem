@@ -18,6 +18,7 @@ class Cell {
     // decide where to go
     float speed = random(maximumAcceleration);
     PVector acceleration = PVector.random2D();
+    acceleration.normalize();
     acceleration.mult(speed);
     
     // seek if mouse is close enough
@@ -27,7 +28,7 @@ class Cell {
     if (location.dist(target) < 200) {
       PVector desired = PVector.sub(target, location);
       desired.normalize();
-      desired.mult(1.5);
+      // desired.mult(speed);
       PVector steer = PVector.sub(desired, velocity);
       acceleration.add(steer);
     }
