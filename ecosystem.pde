@@ -2,18 +2,18 @@ import java.util.Iterator;
 import java.util.List;
 
 class World {
-  int POPULATION = 10;
+  int POPULATION = 500;
   
   List<Cell> cells = new ArrayList<Cell>();
   
-  void seedPopulation() {
+  void populate() {
     if (cells.size() < POPULATION) {
       cells.add(new Cell());
     } 
   }
   
   void move() {
-    seedPopulation();
+    populate();
   }
   
   void draw() {
@@ -30,13 +30,13 @@ class Cell {
   PVector location;
   PVector velocity;
   
-  float maximumVelocity     = 3;
+  float maximumVelocity     = random(5, 10);
   float maximumAcceleration = 0.5; // ...actually the ± high-end ranges
   
   Cell() {
     location = PVector.random2D();
+    location.mult(random(500));
     velocity = PVector.random2D();
-    velocity.mult(random(1, 3));
   }
   
   void move() {
@@ -45,7 +45,7 @@ class Cell {
     
     // decide where to go
     PVector acceleration = PVector.random2D();
-    acceleration.mult(maximumAcceleration);
+    acceleration.mult(random(maximumAcceleration));
     velocity.add(acceleration);
     
     velocity.limit(maximumVelocity);
@@ -63,7 +63,7 @@ class Cell {
     if (nucleusSize < 5)  nucleusSize += age;
     if (bodyWidth   < 20) bodyWidth   += age;
     if (bodyHeight  < 12) bodyHeight  += age;
-    if (tailLength  < 40) tailLength  *= (1 + age / 2);
+    if (tailLength  < 20) tailLength  *= (1 + age / 4);
   }
   
   void draw() {
@@ -87,8 +87,8 @@ class Cell {
     
     // tail  
     stroke(#a1a1a1, alpha);
-    line(-1, -5, 0, tailLength); 
-    line(1, -5, 0, tailLength); 
+    line(-2, -5, 0, tailLength); 
+    line(2, -5, 0, tailLength); 
 
     popMatrix();
   }
