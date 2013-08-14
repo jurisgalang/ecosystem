@@ -3,7 +3,7 @@ class Cell {
   PVector velocity;
 
   float maximumVelocity     = random(5, 10);
-  float maximumAcceleration = random(0.3, 0.8); // ...actually the ± high-end ranges
+  float maximumAcceleration = random(0.2, 0.4); // ...actually the ± high-end ranges
 
   Cell() {
     location = PVector.random2D();
@@ -22,18 +22,25 @@ class Cell {
     int mx = mouseX - (width / 2);
     int my = mouseY - (height / 2);
     PVector target = new PVector(mx, my);
-    if (location.dist(target) <= 150) {
+    float proximity = location.dist(target);
+
+    if (proximity <= 150) {
       acceleration = new PVector(0, 0);
       PVector desired = PVector.sub(target, location);
       desired.normalize();
-      desired.mult(2);
+      float speed = maximumAcceleration * 10;
+      if (proximity < 100) speed = map(proximity, 0, 100, 0, speed);
+      desired.mult(speed);
 
       PVector steer = PVector.sub(desired, velocity);
-      steer.limit(0.025);
+      //steer.limit(speed  * 0.01);
+      steer.limit(0.005);
+
       acceleration.add(steer);
     } else {
       acceleration = PVector.random2D();
       acceleration.mult(maximumAcceleration);
+      // acceleration.mult(random(0.2, 0.6));
     }
 
     velocity.add(acceleration);

@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.List;
 
 class World {
-  int POPULATION = 100;
+  int POPULATION = 500;
 
   List<Cell> cells = new ArrayList<Cell>();
 
