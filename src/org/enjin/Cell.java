@@ -29,11 +29,15 @@ public class Cell extends Thing {
     location.add(velocity);
   }
 
+  float size = 0.001f;
+
   void render() {
     p.translate(location.x, location.y);
     p.noStroke();
     p.fill(0, 17, 17, 15);
-    p.ellipse(0, 0, 10, 10);
+
+    float radius = p.constrain((size += age), 0, 6);
+    p.ellipse(0, 0, radius, radius);
   }
 
   void applyForce(PVector force) {

@@ -11,6 +11,7 @@ abstract class Thing {
 
   public final void play() {
     p.pushMatrix();
+    senescence();
     move();
     render();
     p.popMatrix();
@@ -18,4 +19,11 @@ abstract class Thing {
 
   abstract void move();
   abstract void render();
+
+  float age = 0;
+
+  final void senescence() {
+    age += 0.001;
+  }
+
 }
