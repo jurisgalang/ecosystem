@@ -1,3 +1,17 @@
 #!/bin/sh
-processing-java --run --sketch=`pwd` --output=`pwd`/tmp
-rm -r `pwd`/tmp > /dev/null
+
+# processing-java --run --sketch=`pwd` --output=`pwd`/tmp
+# rm -r `pwd`/tmp > /dev/null
+
+mkdir -p build/
+
+PROCESSING_CORE=/Applications/Processing.app/Contents/Resources/Java/core/library/core.jar
+PROCESSING_GLUEGEN=/Applications/Processing.app/Contents/Resources/Java/core/library/gluegen-rt.jar
+PROCESSING_JOGL=/Applications/Processing.app/Contents/Resources/Java/core/library/jogl-all.jar
+PROCESSING=$PROCESSING_CORE:$PROCESSING_GLUEGEN:$PROCESSING_JOGL
+
+javac -cp $PROCESSING src/App.java -sourcepath src/ -d build/
+
+if [ $? -eq 0 ]; then
+  java -cp build:$PROCESSING App
+fi
