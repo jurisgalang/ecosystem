@@ -21,7 +21,7 @@ public class Cell extends Thing {
 
   void move() {
     randomWalk();
-    avoidEdges();
+    stayWithinBounds();
 
     velocity.add(acceleration);
     velocity.limit(maximumSpeed());
@@ -45,33 +45,29 @@ public class Cell extends Thing {
     force.mult(p.random(1));
     applyForce(force);
   }
-  
-  void avoidEdges() {
-    int ex = (p.width  / 2) - 50;
-    int ey = (p.height / 2) - 50;
-    
+
+  void stayWithinBounds() {
+    int ex = (p.width  / 2);
+    int ey = (p.height / 2);
+
     PVector desired = null;
-    
-    if (location.x > ex) {
-      desired = new PVector(-1, velocity.y);
-    } else if (location.x < -ex) {
-      desired = new PVector(1, velocity.y);
+
+    if (Math.abs(location.x) > ex) {
+      desired = new PVector(-location.x, velocity.y);
     }
-    
-    if (location.y > ey) {
-      desired = new PVector(velocity.x, -1);
-    } else if (location.y < -ey)  {
-      desired = new PVector(velocity.x, 1);
+
+    if (Math.abs(location.y) > ey) {
+      desired = new PVector(location.x, -location.y);
     }
 
     if (desired == null) return;
-    
+
     desired.normalize();
     desired.mult(maximumSpeed());
-    
+
     PVector steer = PVector.sub(desired, velocity);
     steer.limit(0.15f);
-    
+
     applyForce(steer);
   }
 }

@@ -14,6 +14,18 @@ public class App extends PApplet {
     pushMatrix();
     world.play();
     popMatrix();
+
+    if (debug) {
+      noFill();
+      stroke(0x1a, 0x1a, 0x1a, 75);
+      rect(50, 50, width - 100, height - 100);
+    }
+  }
+
+  boolean debug = false;
+
+  public void keyPressed() {
+    debug = !debug;
   }
 
   public static void main(String args[]) {
