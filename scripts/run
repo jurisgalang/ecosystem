@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# processing-java --run --sketch=`pwd` --output=`pwd`/tmp
-# rm -r `pwd`/tmp > /dev/null
-
 mkdir -p build/
 
 PROCESSING_CORE=/Applications/Processing.app/Contents/Resources/Java/core/library/core.jar

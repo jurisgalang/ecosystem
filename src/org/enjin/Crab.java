@@ -8,7 +8,7 @@ public class Crab extends Cell {
   }
 
   float maximumSpeed() {
-    return 5;
+    return 1.25f;
   }
 
   void render() {
