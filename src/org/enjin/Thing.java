@@ -20,10 +20,11 @@ abstract class Thing {
   abstract void move();
   abstract void render();
 
-  float age = 0;
+  float age    = 0;
+  float energy = 1.0f;
 
   final void senescence() {
-    age += 0.001;
+    age += 0.00001;
   }
 
 }

@@ -17,7 +17,7 @@ public class World extends Thing {
 
   void move() {
     if (cells.size() < POPULATION) {
-      Cell cell = p.random(1) < 0.25 ? new Crab(p) : new Cell(p);
+      Cell cell = p.random(1) < 0.05 ? new Crab(this) : new Cell(this);
       // Cell cell = new Crab(p);
       cells.add(cell);
     }
@@ -26,7 +26,7 @@ public class World extends Thing {
   void render() {
     p.background(255);
     p.translate(p.width / 2, p.height / 2);
-    
+
     Iterator<Cell> i = cells.iterator();
     while (i.hasNext()) {
       Cell cell = i.next();

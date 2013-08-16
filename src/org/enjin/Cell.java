@@ -3,16 +3,24 @@ package org.enjin;
 import processing.core.*;
 
 public class Cell extends Thing {
+  World world;
+
   PVector location;
   PVector velocity;
   PVector acceleration;
 
-  public Cell(PApplet p) {
-    super(p);
+  public Cell(World world) {
+    super(world.p);
+    this.world   = world;
     acceleration = new PVector(0, 0);
     velocity     = PVector.random2D();
     location     = PVector.random2D();
     location.mult(p.random(300));
+  }
+
+  public Cell(World world, PVector location) {
+    this(world);
+    this.location = location;
   }
 
   float maximumSpeed() {
@@ -25,19 +33,20 @@ public class Cell extends Thing {
 
     velocity.add(acceleration);
     velocity.limit(maximumSpeed());
-
     location.add(velocity);
   }
 
-  float size = 0.001f;
+  private float size = 0f;
 
   void render() {
     p.translate(location.x, location.y);
     p.noStroke();
-    p.fill(0, 17, 17, 15);
+    p.fill(0x88, 0x99, 0x88, 35);
 
-    float radius = p.constrain((size += age), 0, 6);
-    p.ellipse(0, 0, radius, radius);
+    size = p.constrain((size += age), 0f, 1f);
+    float body = p.map(size, 0f, 1f, 0f, 5f);
+
+    p.ellipse(0, 0, body, body);
   }
 
   void applyForce(PVector force) {
