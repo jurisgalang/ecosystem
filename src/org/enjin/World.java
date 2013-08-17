@@ -2,10 +2,11 @@ package org.enjin;
 
 import processing.core.*;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class World extends Thing {
   int width, height;
@@ -38,10 +39,10 @@ public class World extends Thing {
     }
   }
 
-  Collection<Cell> nearby(Cell from, float distance, Class kind) {
+  Collection<Cell> nearby(Cell from, float distance, Class... kinds) {
     Collection<Cell> list = new ArrayList<Cell>();
     for(Cell cell : cells) {
-      if ((cell.getClass() == kind) &&
+      if (Arrays.asList(kinds).contains(cell.getClass()) &&
           (cell != from) &&
           (from.location.dist(cell.location) < distance)) {
         list.add(cell);
