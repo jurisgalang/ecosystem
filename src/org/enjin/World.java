@@ -5,6 +5,7 @@ import processing.core.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class World extends Thing {
   int width, height;
@@ -37,8 +38,8 @@ public class World extends Thing {
     }
   }
 
-  List<Cell> nearby(Cell from, float distance, Class kind) {
-    List<Cell> list = new ArrayList<Cell>();
+  Collection<Cell> nearby(Cell from, float distance, Class kind) {
+    Collection<Cell> list = new ArrayList<Cell>();
     for(Cell cell : cells) {
       if ((cell.getClass() == kind) &&
           (cell != from) &&
