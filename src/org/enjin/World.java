@@ -25,7 +25,8 @@ public class World extends Thing {
 
   void update() {
     if (cells.size() < POPULATION) {
-      Cell cell = p.random(1) < 0.05 ? new Crab(this) : new Cell(this);
+      //Cell cell = p.random(1) < 0.05 ? new Crab(this) : new Cell(this);
+      Cell cell = new Cell(this);
       cells.add(cell);
     }
   }
@@ -42,7 +43,7 @@ public class World extends Thing {
   }
 
   Collection<Cell> nearby(final Cell from, float distance, Class... kinds) {
-    Collection<Cell> list = new ArrayList<Cell>();
+    List<Cell> list = new ArrayList<Cell>();
 
     for(Cell cell : cells) {
       if (Arrays.asList(kinds).contains(cell.getClass()) &&
@@ -52,15 +53,15 @@ public class World extends Thing {
       }
     }
 
-    // Comparator<Cell> comparator = new Comparator<Cell>() {
-    //   public int compare(Cell m, Cell n) {
-    //     float result = from.location.dist(m.location) - from.location.dist(n.location);
-    //     return (int)result;
-    //   }
-    // };
+    Comparator<Cell> comparator = new Comparator<Cell>() {
+      public int compare(Cell m, Cell n) {
+        float result = from.location.dist(m.location) - from.location.dist(n.location);
+        return (int)result;
+      }
+    };
 
-    // Collections.sort(list, comparator);
-
+    Collections.sort(list, comparator);
+    
     return list;
   }
 

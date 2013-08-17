@@ -2,7 +2,7 @@ package org.enjin;
 
 import processing.core.*;
 
-import java.util.Collection;
+
 import java.util.List;
 
 public class Crab extends Cell {
@@ -14,24 +14,23 @@ public class Crab extends Cell {
     super(world, location);
   }
 
-  float maximumSpeed() {
-    return 1.25f;
+  float maxSpeed() {
+    return 1f;
   }
 
   private boolean nearbyFood = false;
 
+  PVector target;
+  
   void move() {
-    List<Cell> nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
-
-    if (nearbyFood = !nearby.isEmpty()) {
-      int i     = (int)p.random(nearby.size());
-      PVector t = nearby.get(i).location;
-      seek(t);
-    }
-
-    else {
-      randomWalk();
-    }
+    // List<Cell> nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
+    // if (nearbyFood = !nearby.isEmpty()) {
+    //   PVector t = nearby.get(0).location;
+    //   seek(t);
+    //   return;
+    // }
+    // 
+    randomWalk();
   }
 
   private float size = 0f;
@@ -57,9 +56,10 @@ public class Crab extends Cell {
     p.ellipse(0, -5, body, body * 0.666f);
 
     // tail
+    head *= 0.5;
     p.stroke(0xa0, 0xa0, 0xa0, 75);
-    p.line(-2, -5, 0, tail);
-    p.line(2, -5, 0, tail);
+    p.line(-head, -5, 0, tail);
+    p.line(head, -5, 0, tail);
 
     if (nearbyFood) {
       p.noStroke();

@@ -2,12 +2,14 @@ package org.enjin;
 
 import processing.core.*;
 
+import java.util.List;
+
 public class Cell extends Thing {
   World world;
 
-  PVector location;
-  PVector velocity;
-  PVector acceleration;
+  PVector location     = null;
+  PVector velocity     = null;
+  PVector acceleration = null;
 
   public Cell(World world) {
     super(world.p);
@@ -23,19 +25,23 @@ public class Cell extends Thing {
     this.location = location;
   }
 
-  float maximumSpeed() {
-    return 0.15f;
+  float maxSpeed() {
+    return 0.001f;
   }
-
+  
   void update() {
     move();
     stayWithinBounds();
     velocity.add(acceleration);
-    velocity.limit(maximumSpeed());
+    velocity.limit(maxSpeed());
     location.add(velocity);
   }
 
+  private boolean nearbyPrey = false;
+
   void move() {
+    List<Cell> nearby = (List<Cell>)world.nearby(this, 25, Crab.class);
+    nearbyPrey = !nearby.isEmpty();
     randomWalk();
   }
 
@@ -50,6 +56,12 @@ public class Cell extends Thing {
     float body = p.map(size, 0f, 1f, 0f, 5f);
 
     p.ellipse(0, 0, body, body);
+
+    if (nearbyPrey) {
+      p.noStroke();
+      p.fill(0xe0, 0x00, 0x00, 15);
+      p.ellipse(0, 0, 25, 25);
+    }
   }
 
   void applyForce(PVector force) {
@@ -63,8 +75,8 @@ public class Cell extends Thing {
   }
 
   void stayWithinBounds() {
-    int edgeX = world.width / 2;
-    int edgeY = world.height / 2;
+    int edgeX = (world.width / 2) - 50;
+    int edgeY = (world.height / 2) - 50;
 
     PVector desired = null;
 
@@ -79,7 +91,7 @@ public class Cell extends Thing {
     if (desired == null) return;
 
     desired.normalize();
-    desired.mult(maximumSpeed());
+    desired.mult(maxSpeed() * 0.5f);
 
     PVector steer = PVector.sub(desired, velocity);
     steer.limit(0.15f);
@@ -88,17 +100,14 @@ public class Cell extends Thing {
   }
 
   void seek(PVector target) {
-    float proximity = location.dist(target);
-
     PVector desired = PVector.sub(target, location);
-    desired.normalize();
+    float proximity = desired.mag();
 
-    float speed = maximumSpeed();
-    if (proximity < 5) speed = p.map(proximity, 0, 100, 0, speed);
+    float speed = (proximity < 25) ? p.map(proximity, 0, 25, 0, maxSpeed()) : maxSpeed();
+    desired.normalize();
     desired.mult(speed);
 
     PVector steer = PVector.sub(desired, velocity);
-    //steer.limit(speed  * 0.01);
     steer.limit(0.15f);
 
     applyForce(steer);
