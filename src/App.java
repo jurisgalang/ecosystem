@@ -28,6 +28,13 @@ public class App extends PApplet {
     debug = !debug;
   }
 
+  public void mouseClicked() {
+    float x = map(mouseX, 0, width, -width / 2, width / 2);
+    float y = map(mouseY, 0, height, -height / 2, height / 2);
+    PVector location = new PVector(x, y);
+    world.populate(new Crab(world, location));
+  }
+
   public static void main(String args[]) {
     PApplet.main(new String[] { "App" });
   }

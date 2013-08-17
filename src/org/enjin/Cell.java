@@ -60,8 +60,8 @@ public class Cell extends Thing {
   }
 
   void stayWithinBounds() {
-    int ex = (p.width  / 2);
-    int ey = (p.height / 2);
+    int ex = world.width / 2;
+    int ey = world.height / 2;
 
     PVector desired = null;
 

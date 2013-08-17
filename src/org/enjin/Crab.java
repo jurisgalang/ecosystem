@@ -2,13 +2,26 @@ package org.enjin;
 
 import processing.core.*;
 
+import java.util.Collection;
+
 public class Crab extends Cell {
   public Crab(World world) {
     super(world);
   }
 
+  public Crab(World world, PVector location) {
+    super(world, location);
+  }
+
   float maximumSpeed() {
     return 1.25f;
+  }
+
+  private boolean nearbyFood = false;
+
+  void move() {
+    super.move();
+    nearbyFood = !world.nearby(this, 25, Cell.class).isEmpty();
   }
 
   private float size = 0f;
@@ -30,13 +43,19 @@ public class Crab extends Cell {
     p.ellipse(0, -6, head, head);
 
     // body
-    p.fill(0xa0, 0xa0, 0xa0, 75);
+    p.fill(0xbb, 0xbb, 0xbb, 75);
     p.ellipse(0, -5, body, body * 0.666f);
 
     // tail
     p.stroke(0xa0, 0xa0, 0xa0, 75);
     p.line(-2, -5, 0, tail);
     p.line(2, -5, 0, tail);
+
+    if (nearbyFood) {
+      p.noStroke();
+      p.fill(0x00, 0xe0, 0x00, 15);
+      p.ellipse(0, -6, 25, 25);
+    }
   }
 }
 
