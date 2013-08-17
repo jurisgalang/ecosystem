@@ -21,7 +21,7 @@ public class World extends Thing {
     height = p.height;
   }
 
-  void move() {
+  void update() {
     if (cells.size() < POPULATION) {
       Cell cell = p.random(1) < 0.05 ? new Crab(this) : new Cell(this);
       cells.add(cell);

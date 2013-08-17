@@ -3,6 +3,7 @@ package org.enjin;
 import processing.core.*;
 
 import java.util.Collection;
+import java.util.List;
 
 public class Crab extends Cell {
   public Crab(World world) {
@@ -20,8 +21,17 @@ public class Crab extends Cell {
   private boolean nearbyFood = false;
 
   void move() {
-    super.move();
-    nearbyFood = !world.nearby(this, 25, Cell.class).isEmpty();
+    List<Cell> nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
+
+    if (nearbyFood = !nearby.isEmpty()) {
+      int i     = (int)p.random(nearby.size());
+      PVector t = nearby.get(i).location;
+      seek(t);
+    }
+
+    else {
+      randomWalk();
+    }
   }
 
   private float size = 0f;

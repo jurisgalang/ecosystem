@@ -12,12 +12,12 @@ abstract class Thing {
   public final void play() {
     p.pushMatrix();
     senescence();
-    move();
+    update();
     render();
     p.popMatrix();
   }
 
-  abstract void move();
+  abstract void update();
   abstract void render();
 
   float age    = 0;

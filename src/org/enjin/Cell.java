@@ -27,13 +27,16 @@ public class Cell extends Thing {
     return 0.15f;
   }
 
-  void move() {
-    randomWalk();
+  void update() {
+    move();
     stayWithinBounds();
-
     velocity.add(acceleration);
     velocity.limit(maximumSpeed());
     location.add(velocity);
+  }
+
+  void move() {
+    randomWalk();
   }
 
   private float size = 0f;
@@ -60,16 +63,16 @@ public class Cell extends Thing {
   }
 
   void stayWithinBounds() {
-    int ex = world.width / 2;
-    int ey = world.height / 2;
+    int edgeX = world.width / 2;
+    int edgeY = world.height / 2;
 
     PVector desired = null;
 
-    if (Math.abs(location.x) > ex) {
+    if (Math.abs(location.x) > edgeX) {
       desired = new PVector(-location.x, velocity.y);
     }
 
-    if (Math.abs(location.y) > ey) {
+    if (Math.abs(location.y) > edgeY) {
       desired = new PVector(location.x, -location.y);
     }
 
@@ -80,6 +83,23 @@ public class Cell extends Thing {
 
     PVector steer = PVector.sub(desired, velocity);
     steer.limit(0.15f);
+
+    applyForce(steer);
+  }
+
+  void seek(PVector target) {
+    float proximity = location.dist(target);
+
+    PVector desired = PVector.sub(target, location);
+    desired.normalize();
+
+    float speed = maximumSpeed();
+    if (proximity < 5) speed = p.map(proximity, 0, 100, 0, speed);
+    desired.mult(speed);
+
+    PVector steer = PVector.sub(desired, velocity);
+    //steer.limit(speed  * 0.01);
+    steer.limit(0.05f);
 
     applyForce(steer);
   }
