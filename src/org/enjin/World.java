@@ -5,6 +5,8 @@ import processing.core.*;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,8 +41,9 @@ public class World extends Thing {
     }
   }
 
-  Collection<Cell> nearby(Cell from, float distance, Class... kinds) {
+  Collection<Cell> nearby(final Cell from, float distance, Class... kinds) {
     Collection<Cell> list = new ArrayList<Cell>();
+
     for(Cell cell : cells) {
       if (Arrays.asList(kinds).contains(cell.getClass()) &&
           (cell != from) &&
@@ -48,6 +51,16 @@ public class World extends Thing {
         list.add(cell);
       }
     }
+
+    // Comparator<Cell> comparator = new Comparator<Cell>() {
+    //   public int compare(Cell m, Cell n) {
+    //     float result = from.location.dist(m.location) - from.location.dist(n.location);
+    //     return (int)result;
+    //   }
+    // };
+
+    // Collections.sort(list, comparator);
+
     return list;
   }
 

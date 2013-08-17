@@ -99,7 +99,7 @@ public class Cell extends Thing {
 
     PVector steer = PVector.sub(desired, velocity);
     //steer.limit(speed  * 0.01);
-    steer.limit(0.05f);
+    steer.limit(0.15f);
 
     applyForce(steer);
   }
