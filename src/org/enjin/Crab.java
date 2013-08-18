@@ -2,7 +2,8 @@ package org.enjin;
 
 import processing.core.*;
 
-
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Crab extends Cell {
@@ -18,22 +19,21 @@ public class Crab extends Cell {
     return 1f;
   }
 
-  private boolean nearbyFood = false;
+  List<Cell> nearby = Collections.emptyList();
 
-  PVector target;
-  
   void move() {
-    // List<Cell> nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
-    // if (nearbyFood = !nearby.isEmpty()) {
-    //   PVector t = nearby.get(0).location;
-    //   seek(t);
-    //   return;
-    // }
-    // 
-    randomWalk();
+    stayWithinBounds();    
+    wander();
+    
+    nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
+    if (!nearby.isEmpty()) {
+      int i = (int)p.random(nearby.size()) * 0;
+      Cell target = nearby.get(i);
+      seek(target.location);
+    } 
   }
 
-  private float size = 0f;
+  float size = 0f;
 
   void render() {
     p.translate(location.x, location.y);
@@ -49,23 +49,22 @@ public class Crab extends Cell {
 
     // head
     p.fill(0x77, 0x00, 0x00, 75);
-    p.ellipse(0, -6, head, head);
+    p.ellipse(0, 0, head, head);
 
     // body
+    head *= 0.5;
     p.fill(0xbb, 0xbb, 0xbb, 75);
-    p.ellipse(0, -5, body, body * 0.666f);
+    p.ellipse(0, head, body, body * 0.666f);
 
     // tail
-    head *= 0.5;
     p.stroke(0xa0, 0xa0, 0xa0, 75);
-    p.line(-head, -5, 0, tail);
-    p.line(head, -5, 0, tail);
+    p.line(-head, 0, 0, tail);
+    p.line(head, 0, 0, tail);
 
-    if (nearbyFood) {
-      p.noStroke();
-      p.fill(0x00, 0xe0, 0x00, 15);
-      p.ellipse(0, -6, 25, 25);
-    }
+    if (nearby.isEmpty()) return;    
+    p.noStroke();
+    p.fill(0x00, 0xe0, 0x00, 15);
+    p.ellipse(0, 0, 25, 25);
   }
 }
 

@@ -10,9 +10,9 @@ abstract class Thing {
   }
 
   public final void play() {
-    p.pushMatrix();
     senescence();
     update();
+    p.pushMatrix();
     render();
     p.popMatrix();
   }
@@ -26,5 +26,4 @@ abstract class Thing {
   final void senescence() {
     age += 0.00001;
   }
-
 }

@@ -31,8 +31,8 @@ public class App extends PApplet {
   public void mouseClicked() {
     float x = map(mouseX, 0, width, -width / 2, width / 2);
     float y = map(mouseY, 0, height, -height / 2, height / 2);
-    PVector location = new PVector(x, y);
-    world.populate(new Crab(world, location));
+    world.populate(new Crab(world, new PVector(x, y)));
+    // world.populate(new Vehicle(world, new PVector(x, y)));
   }
 
   public static void main(String args[]) {
