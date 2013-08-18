@@ -96,9 +96,9 @@ public class Cell extends Thing {
     if (desired != null) {
       desired.normalize();
       desired.mult(maxSpeed());
-      PVector steer = PVector.sub(desired, velocity);
-      steer.limit(0.025f);
-      applyForce(steer);
+      desired.sub(velocity);
+      desired.limit(0.025f);
+      applyForce(desired);
     }  
   }
 
@@ -109,32 +109,42 @@ public class Cell extends Thing {
     PVector location = this.location.get();
     PVector velocity = this.velocity.get();
     velocity.normalize();
-    velocity.mult(100);
+    velocity.mult(75);
     location.add(velocity);
     
     // use that location as the center of a circle of some radius
-    PVector origin = location.get();
-    float r        = 25f;
-    
-    // and pick a random point along the circumference of that circle
     wanderTheta   += p.random(-0.3f, 0.3f);
+    float r        = 25f;
     float theta    = velocity.heading() + wanderTheta;
     float x        = r * p.cos(theta);
     float y        = r * p.sin(theta);
-    PVector target = PVector.add(origin, new PVector(x, y));
-    
-    // p.smooth();
-    // p.stroke(0xdd, 0xdd, 0xdd, 75);
-    // p.line(this.location.x, this.location.y, location.x, location.y);
-    // p.noFill();
-    // p.ellipse(location.x, location.y, r * 2, r * 2);
-    // p.line(location.x, location.y, target.x, target.y);
-    // p.fill(0xdd, 0xdd, 0xdd, 75);
-    // p.ellipse(target.x, target.y, 10, 10);
-    // p.stroke(0x00, 0xee, 0x00, 150);
-    // p.line(this.location.x, this.location.y, target.x, target.y);
-    
+
+    // and pick a random point along the circumference of that circle
+    PVector target = PVector.add(location, new PVector(x, y));
+
+    // using it as the next waypoint
     seek(target);
+
+    // DEBUG    
+    p.smooth();
+    p.stroke(0xdd, 0xdd, 0xdd, 75);
+    p.line(this.location.x, this.location.y, location.x, location.y);
+    p.noFill();
+    p.ellipse(location.x, location.y, r * 2, r * 2);
+    p.line(location.x, location.y, target.x, target.y);
+    p.fill(0xdd, 0xdd, 0xdd, 75);
+    p.ellipse(target.x, target.y, 10, 10);
+    p.stroke(0x00, 0xee, 0x00, 150);
+    p.line(this.location.x, this.location.y, target.x, target.y);
+  }
+
+  void chase(Cell prey) {
+    // get a point some distance from the current location of prey
+    PVector location = prey.location.get();
+    PVector velocity = prey.velocity.get();
+    velocity.normalize();
+    velocity.mult(100);
+    location.add(velocity);
   }
   
   void seek(PVector target) {
@@ -144,11 +154,9 @@ public class Cell extends Thing {
     float speed = (proximity < 25) ? p.map(proximity, 0, 25, 0, maxSpeed()) : maxSpeed();
     desired.normalize();
     desired.mult(speed);
-  
-    PVector steer = PVector.sub(desired, velocity);
-    steer.limit(0.025f);
-  
-    applyForce(steer);
+    desired.sub(velocity);
+    desired.limit(0.025f);
+    applyForce(desired);
   }
 }
 
