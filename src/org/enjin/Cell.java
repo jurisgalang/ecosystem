@@ -174,9 +174,9 @@ public class Cell extends Thing {
 
     // DEBUG    
     p.smooth();
-    p.stroke(0xdd, 0xdd, 0xdd, 75);
+    p.stroke(0xdd, 0xdd, 0xdd, 15);
     p.line(prey.location.x, prey.location.y, target.x, target.y);
-    p.stroke(0xdd, 0x00, 0x00, 75);
+    p.stroke(0xdd, 0x00, 0x00, 15);
     p.line(this.location.x, this.location.y, target.x, target.y);
     p.noStroke();
     p.fill(0xff, 0x00, 0x00, 15);
