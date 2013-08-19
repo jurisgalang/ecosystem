@@ -4,6 +4,7 @@ import processing.core.*;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class Cell extends Thing {
   World world;
@@ -28,7 +29,7 @@ public class Cell extends Thing {
   }
 
   float maxSpeed() {
-    return 0.01f;
+    return 0.001f;
   }
   
   void update() {
@@ -44,7 +45,7 @@ public class Cell extends Thing {
   void move() {
     nearby = world.nearby(this, 25, Stingray.class);
     stayWithinBounds();
-    // randomWalk();
+    randomWalk();
   }
 
   float size = 0f;
@@ -138,15 +139,36 @@ public class Cell extends Thing {
     // p.line(this.location.x, this.location.y, target.x, target.y);
   }
 
+  void scan(float distance, Class... kinds) {
+    // get a point some distance from the current location
+    PVector location = this.location.get();
+    PVector velocity = this.velocity.get();
+    velocity.normalize();
+    velocity.mult(distance);
+    location.add(velocity);
+
+    // use that location as the center of a circle of some radius
+    this.nearby = (List<Cell>)world.nearby(this, distance, kinds);
+
+    // DEBUG
+    p.noFill();
+    p.stroke(0x00, 0xe0, 0xe0, 15);
+    p.ellipse(location.x, location.y, distance * 2, distance * 2);
+
+    for(Cell cell : nearby) {
+      p.ellipse(cell.location.x, cell.location.y, 25, 25);
+    }
+  }
+
   void chase(Cell prey) {
+    PVector location = PVector.sub(prey.location, this.location); // range to close
     PVector velocity = PVector.sub(prey.velocity, this.velocity); // closing velocity
     velocity.normalize();
 
-    PVector location = PVector.sub(prey.location, this.location); // range to close
-    float magnitude  = location.mag() / velocity.mag();           // time to close
-    velocity.mult(magnitude);
+    float magnitude = location.mag() / velocity.mag();           // time to close
+    velocity.mult(magnitude);              
 
-    PVector target   = PVector.add(prey.location, velocity);
+    PVector target = PVector.add(prey.location, velocity);       // intercept location
     seek(target);
 
     // DEBUG    
@@ -159,7 +181,7 @@ public class Cell extends Thing {
     p.fill(0xff, 0x00, 0x00, 15);
     p.ellipse(target.x, target.y, 30, 30);
   }
-  
+
   void seek(PVector target) {
     PVector desired = PVector.sub(target, location);
     float proximity = desired.mag();

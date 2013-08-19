@@ -19,18 +19,18 @@ public class Stingray extends Cell {
     return 1f;
   }
 
-  List<Cell> nearby = Collections.emptyList();
+  // List<Cell> nearby = Collections.emptyList();
 
   void move() {
     stayWithinBounds();    
     wander();
     
-    nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
-    if (!nearby.isEmpty()) {
-      int i = (int)p.random(nearby.size()) * 0;
-      Cell target = nearby.get(i);
-      seek(target.location);
-    }
+    // nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
+    // if (!nearby.isEmpty()) {
+    //   int i = (int)p.random(nearby.size()) * 0;
+    //   Cell target = nearby.get(i);
+    //   seek(target.location);
+    // }
   }
 
   float size = 0f;

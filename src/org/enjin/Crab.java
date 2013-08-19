@@ -19,16 +19,16 @@ public class Crab extends Cell {
     return 2f;
   }
 
-  List<Cell> nearby = Collections.emptyList();
+  // List<Cell> nearby = Collections.emptyList();
 
   void move() {
     // http://ns2.rvok.net/tmp/Reilly.AI.for.Game.Developers/ch02_sect1_005.html
-    stayWithinBounds();    
+    stayWithinBounds(); 
+    scan(100, Stingray.class);
 
-    nearby = (List<Cell>)world.nearby(this, 75, Stingray.class);
     if (!nearby.isEmpty()) {
-      int i = (int)p.random(nearby.size()) * 1;
-      Cell target = nearby.get(i);
+      int i       = (int)p.random(nearby.size()) * 1;
+      Cell target = ((List<Cell>)nearby).get(i);
       chase(target);
     } else {
       wander();
