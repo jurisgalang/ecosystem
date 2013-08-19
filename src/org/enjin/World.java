@@ -27,7 +27,7 @@ public class World extends Thing {
     List<Cell> list = new ArrayList<Cell>();
 
     for(Cell cell : cells) {
-      float distance = p.sq(location.x - cell.location.x) + 
+      float distance = p.sq(location.x - cell.location.x) +
         p.sq(location.y - cell.location.y);
 
       if ((cell != from) &&
@@ -45,25 +45,22 @@ public class World extends Thing {
     };
 
     Collections.sort(list, comparator);
-    
+
     return list;
   }
 
   void update() {
-    if (cells.size() < POPULATION) {
-      // Cell cell = p.random(1) < 0.05 ? new Stingray(this) : new Cell(this);
-      // cells.add(cell);
-    }
+    //
   }
 
   void render() {
     p.background(0x33, 0x33, 0x33);
     p.pushMatrix();
     p.translate(width / 2, height / 2);
-    renderPopulation();    
+    renderPopulation();
     p.popMatrix();
   }
-  
+
   private void renderPopulation() {
     Iterator<Cell> i = cells.iterator();
     while (i.hasNext()) {

@@ -7,33 +7,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class Stingray extends Cell {
-  public Stingray(World world) {
-    super(world);
-  }
-
   public Stingray(World world, PVector location) {
     super(world, location);
+    maxSpeed = 1f;
   }
 
-  float maxSpeed() {
-    return 1f;
+  public Stingray(World world) {
+    this(world, PVector.random2D());
   }
-
-  // List<Cell> nearby = Collections.emptyList();
 
   void move() {
-    stayWithinBounds();    
+    stayWithinBounds();
     wander();
-    
-    // nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
-    // if (!nearby.isEmpty()) {
-    //   int i = (int)p.random(nearby.size()) * 0;
-    //   Cell target = nearby.get(i);
-    //   seek(target.location);
-    // }
   }
-
-  float size = 0f;
 
   void render() {
     p.translate(location.x, location.y);
@@ -42,7 +28,6 @@ public class Stingray extends Cell {
     p.rotate(theta);
     p.noStroke();
 
-    size = p.constrain((size += age), 0f, 1f);
     float head = p.map(size, 0f, 1f, 0f, 5f);
     float body = p.map(size, 0f, 1f, 0f, 15f);
     float tail = p.map(size, 0f, 1f, 0f, 25f);
@@ -61,7 +46,7 @@ public class Stingray extends Cell {
     p.line(-head, 0, 0, tail);
     p.line(head, 0, 0, tail);
 
-    if (nearby.isEmpty()) return;    
+    if (nearby.isEmpty()) return;
     p.noStroke();
     p.fill(0x00, 0xe0, 0x00, 15);
     p.ellipse(0, 0, 25, 25);

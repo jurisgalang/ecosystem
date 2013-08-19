@@ -21,9 +21,11 @@ abstract class Thing {
   abstract void render();
 
   float age    = 0;
+  float size   = 0;
   float energy = 1.0f;
 
   final void senescence() {
     age += 0.00001;
+    size = p.constrain((size += age), 0, 1f);
   }
 }
