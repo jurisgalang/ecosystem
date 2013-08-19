@@ -6,32 +6,30 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class Crab extends Cell {
-  public Crab(World world) {
+public class Stingray extends Cell {
+  public Stingray(World world) {
     super(world);
   }
 
-  public Crab(World world, PVector location) {
+  public Stingray(World world, PVector location) {
     super(world, location);
   }
 
   float maxSpeed() {
-    return 2f;
+    return 1f;
   }
 
   List<Cell> nearby = Collections.emptyList();
 
   void move() {
-    // http://ns2.rvok.net/tmp/Reilly.AI.for.Game.Developers/ch02_sect1_005.html
     stayWithinBounds();    
-
-    nearby = (List<Cell>)world.nearby(this, 75, Stingray.class);
+    wander();
+    
+    nearby = (List<Cell>)world.nearby(this, 25, Cell.class);
     if (!nearby.isEmpty()) {
-      int i = (int)p.random(nearby.size()) * 1;
+      int i = (int)p.random(nearby.size()) * 0;
       Cell target = nearby.get(i);
-      chase(target);
-    } else {
-      wander();
+      seek(target.location);
     }
   }
 
@@ -50,22 +48,22 @@ public class Crab extends Cell {
     float tail = p.map(size, 0f, 1f, 0f, 25f);
 
     // head
-    p.fill(0x77, 0x00, 0x00, 100);
-    p.ellipse(0, 0, 5, 5);
-
-    p.fill(0xbb, 0xbb, 0xbb, 75);
-    p.arc(0, 5, 25, 15, p.PI - p.QUARTER_PI, p.TWO_PI + p.QUARTER_PI, p.PIE);
+    p.fill(0x77, 0x00, 0x00, 75);
+    p.ellipse(0, 0, head, head);
 
     // body
-    p.ellipse(0, 10, 7, 20);
+    head *= 0.5;
+    p.fill(0xbb, 0xbb, 0xbb, 75);
+    p.ellipse(0, head, body, body * 0.666f);
 
     // tail
-    p.stroke(0xdd, 0xa0, 0xa0, 100);
-    p.line(0, 10, 0, 40);
+    p.stroke(0xa0, 0xa0, 0xa0, 75);
+    p.line(-head, 0, 0, tail);
+    p.line(head, 0, 0, tail);
 
     if (nearby.isEmpty()) return;    
     p.noStroke();
     p.fill(0x00, 0xe0, 0x00, 15);
-    p.ellipse(0, 0, 50, 50);
+    p.ellipse(0, 0, 25, 25);
   }
 }

@@ -42,7 +42,7 @@ public class Cell extends Thing {
   Collection<Cell> nearby = Collections.emptyList();;
 
   void move() {
-    nearby = world.nearby(this, 25, Crab.class);
+    nearby = world.nearby(this, 25, Stingray.class);
     stayWithinBounds();
     // randomWalk();
   }
@@ -126,25 +126,38 @@ public class Cell extends Thing {
     seek(target);
 
     // DEBUG    
-    p.smooth();
-    p.stroke(0xdd, 0xdd, 0xdd, 75);
-    p.line(this.location.x, this.location.y, location.x, location.y);
-    p.noFill();
-    p.ellipse(location.x, location.y, r * 2, r * 2);
-    p.line(location.x, location.y, target.x, target.y);
-    p.fill(0xdd, 0xdd, 0xdd, 75);
-    p.ellipse(target.x, target.y, 10, 10);
-    p.stroke(0x00, 0xee, 0x00, 150);
-    p.line(this.location.x, this.location.y, target.x, target.y);
+    // p.smooth();
+    // p.stroke(0xdd, 0xdd, 0xdd, 15);
+    // p.line(this.location.x, this.location.y, location.x, location.y);
+    // p.noFill();
+    // p.ellipse(location.x, location.y, r * 2, r * 2);
+    // p.line(location.x, location.y, target.x, target.y);
+    // p.fill(0xdd, 0xdd, 0xdd, 15);
+    // p.ellipse(target.x, target.y, 10, 10);
+    // p.stroke(0x00, 0xee, 0x00, 15);
+    // p.line(this.location.x, this.location.y, target.x, target.y);
   }
 
   void chase(Cell prey) {
-    // get a point some distance from the current location of prey
-    PVector location = prey.location.get();
-    PVector velocity = prey.velocity.get();
+    PVector velocity = PVector.sub(prey.velocity, this.velocity); // closing velocity
     velocity.normalize();
-    velocity.mult(100);
-    location.add(velocity);
+
+    PVector location = PVector.sub(prey.location, this.location); // range to close
+    float magnitude  = location.mag() / velocity.mag();           // time to close
+    velocity.mult(magnitude);
+
+    PVector target   = PVector.add(prey.location, velocity);
+    seek(target);
+
+    // DEBUG    
+    p.smooth();
+    p.stroke(0xdd, 0xdd, 0xdd, 75);
+    p.line(prey.location.x, prey.location.y, target.x, target.y);
+    p.stroke(0xdd, 0x00, 0x00, 75);
+    p.line(this.location.x, this.location.y, target.x, target.y);
+    p.noStroke();
+    p.fill(0xff, 0x00, 0x00, 15);
+    p.ellipse(target.x, target.y, 30, 30);
   }
   
   void seek(PVector target) {
@@ -159,4 +172,3 @@ public class Cell extends Thing {
     applyForce(desired);
   }
 }
-

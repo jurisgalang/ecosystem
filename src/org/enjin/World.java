@@ -47,9 +47,10 @@ public class World extends Thing {
   }
 
   void update() {
-    if (cells.size() >= POPULATION) return;
-    Cell cell = p.random(1) < 0.05 ? new Crab(this) : new Cell(this);
-    cells.add(cell);
+    if (cells.size() < POPULATION) {
+      // Cell cell = p.random(1) < 0.05 ? new Stingray(this) : new Cell(this);
+      // cells.add(cell);
+    }
   }
 
   void render() {
