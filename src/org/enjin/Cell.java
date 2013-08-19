@@ -43,7 +43,7 @@ public class Cell extends Thing {
   Collection<Cell> nearby = Collections.emptyList();;
 
   void move() {
-    nearby = world.nearby(this, 25, Stingray.class);
+    //nearby = world.nearby(this, 25, Stingray.class);
     stayWithinBounds();
     randomWalk();
   }
@@ -139,21 +139,22 @@ public class Cell extends Thing {
     // p.line(this.location.x, this.location.y, target.x, target.y);
   }
 
-  void scan(float distance, Class... kinds) {
-    // get a point some distance from the current location
+  void scan(float radius, Class... kinds) {
+    // get a point some radius from the current location
     PVector location = this.location.get();
     PVector velocity = this.velocity.get();
     velocity.normalize();
-    velocity.mult(distance);
+    velocity.mult(radius);
     location.add(velocity);
 
     // use that location as the center of a circle of some radius
-    this.nearby = (List<Cell>)world.nearby(this, distance, kinds);
+    this.nearby = (List<Cell>)world.nearby(this, location, radius, kinds);
 
     // DEBUG
+    radius *= 2;
     p.noFill();
     p.stroke(0x00, 0xe0, 0xe0, 15);
-    p.ellipse(location.x, location.y, distance * 2, distance * 2);
+    p.ellipse(location.x, location.y, radius, radius);
 
     for(Cell cell : nearby) {
       p.ellipse(cell.location.x, cell.location.y, 25, 25);

@@ -23,13 +23,16 @@ public class World extends Thing {
     height = p.height;
   }
 
-  Collection<Cell> nearby(final Cell from, float distance, Class... kinds) {
+  Collection<Cell> nearby(final Cell from, PVector location, float radius, Class... kinds) {
     List<Cell> list = new ArrayList<Cell>();
 
     for(Cell cell : cells) {
-      if (Arrays.asList(kinds).contains(cell.getClass()) &&
-          (cell != from) &&
-          (from.location.dist(cell.location) < distance)) {
+      float distance = p.sq(location.x - cell.location.x) + 
+        p.sq(location.y - cell.location.y);
+
+      if ((cell != from) &&
+          Arrays.asList(kinds).contains(cell.getClass()) &&
+          (distance < p.sq(radius))) {
         list.add(cell);
       }
     }
