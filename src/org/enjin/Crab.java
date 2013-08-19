@@ -17,8 +17,8 @@ public class Crab extends Cell {
   }
 
   void move() {
-    stayWithinBounds();
-    scan(100, Stingray.class);
+    float r = p.map(size, 0, 1f, 0, 100f);
+    scan(r, Stingray.class);
 
     if (!nearby.isEmpty()) {
       int i       = (int)p.random(nearby.size()) * 1;
@@ -36,20 +36,24 @@ public class Crab extends Cell {
     p.rotate(theta);
     p.noStroke();
 
+    float head = p.map(size, 0, 1f, 0, 5f);
+    float body = p.map(size, 0, 1f, 0, 20f);
+    float tail = p.map(size, 0, 1f, 0, 40f);
+
     // head
     p.fill(0x77, 0x00, 0x00, 100);
-    p.ellipse(0, 0, 5, 5);
+    p.ellipse(0, 0, head, head);
 
     // caul
     p.fill(0xbb, 0xbb, 0xbb, 75);
-    p.arc(0, 5, 25, 15, p.PI - p.QUARTER_PI, p.TWO_PI + p.QUARTER_PI, p.PIE);
+    p.arc(0, 5, 5 * head, 3 * head, p.PI - p.QUARTER_PI, p.TWO_PI + p.QUARTER_PI, p.PIE);
 
     // body
-    p.ellipse(0, 10, 7, 20);
+    p.ellipse(0, 10, 0.35f * body, body);
 
     // tail
     p.stroke(0xdd, 0xa0, 0xa0, 100);
-    p.line(0, 10, 0, 40);
+    p.line(0, 10, 0, tail);
 
     if (nearby.isEmpty()) return;
     p.noStroke();

@@ -17,8 +17,16 @@ public class Stingray extends Cell {
   }
 
   void move() {
-    stayWithinBounds();
     wander();
+
+    float r = p.map(size, 0, 1f, 0, 25f);
+    scan(r, Cell.class);
+
+    if (!nearby.isEmpty()) {
+      int i       = (int)p.random(nearby.size()) * 1;
+      Cell target = ((List<Cell>)nearby).get(i);
+      seek(target.location);
+    }
   }
 
   void render() {

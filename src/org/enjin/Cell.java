@@ -9,12 +9,14 @@ import java.util.List;
 public class Cell extends Thing {
   World world;
 
-  PVector location     = null;
-  PVector velocity     = null;
-  PVector acceleration = null;
+  PVector location        = null;
+  PVector velocity        = null;
+  PVector acceleration    = null;
 
-  float maxSpeed       = 0.001f;
-  float wanderTheta    = 0;
+  float maxSpeed          = 0.001f;
+  float wanderTheta       = 0;
+
+  Collection<Cell> nearby = Collections.emptyList();;
 
   public Cell(World world, PVector location) {
     super(world.p);
@@ -29,7 +31,8 @@ public class Cell extends Thing {
     location.mult(world.height / 2);
   }
 
-  void update() {
+  final void update() {
+    stayWithinBounds();
     move();
     velocity.add(acceleration);
     velocity.limit(maxSpeed);
@@ -37,11 +40,7 @@ public class Cell extends Thing {
     acceleration.mult(0);
   }
 
-  Collection<Cell> nearby = Collections.emptyList();;
-
   void move() {
-    //nearby = world.nearby(this, 25, Stingray.class);
-    stayWithinBounds();
     randomWalk();
   }
 
@@ -59,7 +58,7 @@ public class Cell extends Thing {
     p.ellipse(0, 0, 25, 25);
   }
 
-  void applyForce(PVector force) {
+  final void applyForce(PVector force) {
     acceleration.add(force);
   }
 
@@ -70,7 +69,7 @@ public class Cell extends Thing {
     applyForce(force);
   }
 
-  public void stayWithinBounds() {
+  void stayWithinBounds() {
     PVector desired = null;
 
     double edgeX = (world.width - 100) * 0.5;
@@ -164,7 +163,6 @@ public class Cell extends Thing {
     seek(target);
 
     // DEBUG
-    p.smooth();
     p.stroke(0xdd, 0xdd, 0xdd, 15);
     p.line(prey.location.x, prey.location.y, target.x, target.y);
     p.stroke(0xdd, 0x00, 0x00, 15);

@@ -25,7 +25,7 @@ abstract class Thing {
   float energy = 1.0f;
 
   final void senescence() {
-    age += 0.00001;
+    age += 0.0000001f;
     size = p.constrain((size += age), 0, 1f);
   }
 }
