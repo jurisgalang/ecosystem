@@ -9,7 +9,8 @@ import java.util.List;
 public class Crab extends Cell {
   public Crab(World world, PVector location) {
     super(world, location);
-    maxSpeed = 1.5f;
+    maxSpeed      = 1.5f;
+    steeringForce = 0.095f;
   }
 
   public Crab(World world) {

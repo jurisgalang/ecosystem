@@ -14,6 +14,7 @@ public class Cell extends Thing {
   PVector acceleration    = null;
 
   float maxSpeed          = 0.001f;
+  float steeringForce     = 0.025f;
   float wanderTheta       = 0;
 
   Collection<Cell> nearby = Collections.emptyList();;
@@ -89,7 +90,7 @@ public class Cell extends Thing {
       desired.normalize();
       desired.mult(maxSpeed);
       desired.sub(velocity);
-      desired.limit(0.025f);
+      desired.limit(steeringForce);
       applyForce(desired);
     }
   }
@@ -154,7 +155,7 @@ public class Cell extends Thing {
   void chase(Cell prey) {
     PVector location = PVector.sub(prey.location, this.location); // range to close
     PVector velocity = PVector.sub(prey.velocity, this.velocity); // closing velocity
-    // velocity.normalize();
+    velocity.normalize();
 
     float magnitude = location.mag() / velocity.mag();           // time to close
     velocity.mult(magnitude);
@@ -182,7 +183,7 @@ public class Cell extends Thing {
     desired.normalize();
     desired.mult(speed);
     desired.sub(velocity);
-    desired.limit(0.025f);
+    desired.limit(steeringForce);
     applyForce(desired);
   }
 }
