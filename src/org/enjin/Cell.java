@@ -140,11 +140,11 @@ public class Cell extends Thing {
     this.nearby = (List<Cell>)world.nearby(this, location, radius, kinds);
 
     // DEBUG
+    if (nearby.isEmpty()) return;
     radius *= 2;
     p.noFill();
     p.stroke(0x00, 0xe0, 0xe0, 15);
     p.ellipse(location.x, location.y, radius, radius);
-
     for(Cell cell : nearby) {
       p.ellipse(cell.location.x, cell.location.y, 25, 25);
     }
@@ -154,7 +154,7 @@ public class Cell extends Thing {
   void chase(Cell prey) {
     PVector location = PVector.sub(prey.location, this.location); // range to close
     PVector velocity = PVector.sub(prey.velocity, this.velocity); // closing velocity
-    velocity.normalize();
+    // velocity.normalize();
 
     float magnitude = location.mag() / velocity.mag();           // time to close
     velocity.mult(magnitude);
@@ -165,11 +165,13 @@ public class Cell extends Thing {
     // DEBUG
     p.stroke(0xdd, 0xdd, 0xdd, 15);
     p.line(prey.location.x, prey.location.y, target.x, target.y);
-    p.stroke(0xdd, 0x00, 0x00, 15);
+
+    p.stroke(0xcc, 0x00, 0x00, 80);
     p.line(this.location.x, this.location.y, target.x, target.y);
+
     p.noStroke();
-    p.fill(0xff, 0x00, 0x00, 15);
-    p.ellipse(target.x, target.y, 30, 30);
+    p.fill(0xff, 0xd1, 0x00, 30);
+    p.ellipse(target.x, target.y, 5, 5);
   }
 
   void seek(PVector target) {
