@@ -104,7 +104,7 @@ public class Cell extends Thing {
     location.add(velocity);
 
     // use that location as the center of a circle of some radius
-    wanderTheta   += p.random(-0.3f, 0.3f);
+    wanderTheta   += p.random(-0.9f, 0.9f);
     float r        = 25f;
     float theta    = velocity.heading() + wanderTheta;
     float x        = r * p.cos(theta);
@@ -141,14 +141,14 @@ public class Cell extends Thing {
     this.nearby = (List<Cell>)world.nearby(this, location, radius, kinds);
 
     // DEBUG
-    if (nearby.isEmpty()) return;
-    radius *= 2;
-    p.noFill();
-    p.stroke(0x00, 0xe0, 0xe0, 15);
-    p.ellipse(location.x, location.y, radius, radius);
-    for(Cell cell : nearby) {
-      p.ellipse(cell.location.x, cell.location.y, 25, 25);
-    }
+    // if (nearby.isEmpty()) return;
+    // radius *= 2;
+    // p.noFill();
+    // p.stroke(0x00, 0xe0, 0xe0, 15);
+    // p.ellipse(location.x, location.y, radius, radius);
+    // for(Cell cell : nearby) {
+    //   p.ellipse(cell.location.x, cell.location.y, 25, 25);
+    // }
   }
 
   // REF: http://ns2.rvok.net/tmp/Reilly.AI.for.Game.Developers/ch02_sect1_005.html
@@ -164,15 +164,15 @@ public class Cell extends Thing {
     seek(target);
 
     // DEBUG
-    p.stroke(0xdd, 0xdd, 0xdd, 15);
-    p.line(prey.location.x, prey.location.y, target.x, target.y);
+    // p.stroke(0xdd, 0xdd, 0xdd, 15);
+    // p.line(prey.location.x, prey.location.y, target.x, target.y);
 
-    p.stroke(0xcc, 0x00, 0x00, 80);
-    p.line(this.location.x, this.location.y, target.x, target.y);
+    // p.stroke(0xcc, 0x00, 0x00, 80);
+    // p.line(this.location.x, this.location.y, target.x, target.y);
 
-    p.noStroke();
-    p.fill(0xff, 0xd1, 0x00, 30);
-    p.ellipse(target.x, target.y, 5, 5);
+    // p.noStroke();
+    // p.fill(0xff, 0xd1, 0x00, 30);
+    // p.ellipse(target.x, target.y, 5, 5);
   }
 
   void seek(PVector target) {

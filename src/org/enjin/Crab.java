@@ -9,8 +9,7 @@ import java.util.List;
 public class Crab extends Cell {
   public Crab(World world, PVector location) {
     super(world, location);
-    maxSpeed      = 1.5f;
-    steeringForce = 0.095f;
+    maxSpeed = 1f;
   }
 
   public Crab(World world) {
@@ -18,15 +17,15 @@ public class Crab extends Cell {
   }
 
   void move() {
-    float r = p.map(size, 0, 1f, 0, 100f);
-    scan(r, Stingray.class);
+    wander();
+
+    float r = p.map(size, 0, 1f, 0, 25f);
+    scan(r, Cell.class);
 
     if (!nearby.isEmpty()) {
       int i       = (int)p.random(nearby.size()) * 1;
       Cell target = ((List<Cell>)nearby).get(i);
-      chase(target);
-    } else {
-      wander();
+      seek(target.location);
     }
   }
 
@@ -37,28 +36,27 @@ public class Crab extends Cell {
     p.rotate(theta);
     p.noStroke();
 
-    float head = p.map(size, 0, 1f, 0, 5f);
-    float body = p.map(size, 0, 1f, 0, 20f);
-    float tail = p.map(size, 0, 1f, 0, 40f);
+    float head = p.map(size, 0f, 1f, 0f, 5f);
+    float body = p.map(size, 0f, 1f, 0f, 15f);
+    float tail = p.map(size, 0f, 1f, 0f, 25f);
 
     // head
-    p.fill(0x77, 0x00, 0x00, 100);
+    p.fill(0x77, 0x00, 0x00, 75);
     p.ellipse(0, 0, head, head);
 
-    // caul
-    p.fill(0xbb, 0xbb, 0xbb, 75);
-    p.arc(0, 5, 5 * head, 3 * head, p.PI - p.QUARTER_PI, p.TWO_PI + p.QUARTER_PI, p.PIE);
-
     // body
-    p.ellipse(0, 10, 0.35f * body, body);
+    head *= 0.5;
+    p.fill(0xbb, 0xbb, 0xbb, 75);
+    p.ellipse(0, head, body, body * 0.666f);
 
     // tail
-    p.stroke(0xdd, 0xa0, 0xa0, 100);
-    p.line(0, 10, 0, tail);
+    p.stroke(0xa0, 0xa0, 0xa0, 75);
+    p.line(-head, 0, 0, tail);
+    p.line(head, 0, 0, tail);
 
     if (nearby.isEmpty()) return;
     p.noStroke();
     p.fill(0x00, 0xe0, 0x00, 15);
-    p.ellipse(0, 0, 50, 50);
+    p.ellipse(0, 0, 25, 25);
   }
 }
